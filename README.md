@@ -21,7 +21,7 @@ With a focus on simplicity and versatility, these dot icons can be seamlessly in
 ## 🌟 Features
 
 - Small size SVGs
-- 16x16 dot matrix
+- 32x32 dot matrix
 
 ## 👥 Contributing
 
