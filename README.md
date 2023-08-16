@@ -21,8 +21,24 @@ With a focus on simplicity and versatility, these dot icons can be seamlessly in
 ## 🌟 Features
 
 - Small size SVGs
-- 32x32 dot matrix
-- 16x16 dot matrix
+<table>
+    <tr>
+      <th>32x32 dot matrix</th>
+      <th>16x16 dot matrix</th>
+    </tr>
+    <tr>
+      <td valign="center" align="center" >
+        <img width="25px" background="red" src="https://github.com/eduardconstantin/doticons/blob/main/src/32/github.svg"/>
+        <img width="75px" src="https://github.com/eduardconstantin/doticons/blob/main/src/32/github.svg"/>
+        <img width="150px" src="https://github.com/eduardconstantin/doticons/blob/main/src/32/github.svg"/>
+      </td>
+      <td valign="center" align="center">
+        <img width="25px" src="https://github.com/eduardconstantin/doticons/blob/main/src/16/github.svg"/>
+        <img width="75px" style="background: #fff" src="https://github.com/eduardconstantin/doticons/blob/main/src/16/github.svg"/>
+        <img width="150px" src="https://github.com/eduardconstantin/doticons/blob/main/src/16/github.svg"/>
+      </td>
+    </tr>
+</table>
 
 ## 👥 Contributing
 
