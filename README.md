@@ -1,4 +1,4 @@
-<img src="title.png"/>
+<img src=".github/title.png"/>
 <br />
 
 Doticons is a comprehensive and carefully curated collection of SVG dot icons.
