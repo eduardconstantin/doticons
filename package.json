@@ -5,7 +5,7 @@
   "author": "Eduard-Constantin Ibinceanu",
   "license": "MIT",
   "scripts": {
-    "build": "node ./scripts/index.js 16 && node ./scripts/index.js 32"
+    "build": "node ./src/build.js 16 && node ./src/build.js 32"
   },
   "type": "module",
   "dependencies": {
