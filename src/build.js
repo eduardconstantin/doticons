@@ -46,14 +46,6 @@ async function writeFiles(file, text) {
     await fs.writeFile(file, text, 'utf8')
 }
 
-const writeJson = async (size, json) => {
-  await fs.writeFile(
-    join(process.cwd(), `build/${size}/package.json`),
-    JSON.stringify(json, null, 2) + "\n",
-    "utf8"
-  )
-}
-
 function exportIcons(icons) {
   return icons
     .map(({ componentName }) => {
@@ -73,8 +65,8 @@ const main = async (size) => {
 
   const icons = await getIcons(size)
   await buildIcons(size, icons)
-  await writeJson(size, packageJson)
-  return console.log(`Finished building ${size}x${size} grid package.`)
+  await writeFiles(`build/${size}/package.json`, JSON.stringify(packageJson, null, 2) + "\n")
+  return console.log(`Finished building ${size}x${size} grid icons package.`)
 }
 
 main(iconSize)
