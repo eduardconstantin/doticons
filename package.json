@@ -1,0 +1,19 @@
+{
+  "name": "doticons-source",
+  "version": "0.0.1",
+  "description": "Doticons is a comprehensive and carefully curated collection of SVG dot icons.",
+  "author": "Eduard-Constantin Ibinceanu",
+  "license": "MIT",
+  "scripts": {
+    "build": "node ./src/build.js 16 && node ./src/build.js 32"
+  },
+  "type": "module",
+  "dependencies": {
+    "@babel/core": "^7.22.17",
+    "@babel/plugin-transform-react-jsx": "^7.22.15",
+    "@svgr/core": "^8.1.0",
+    "@svgr/plugin-jsx": "^8.1.0",
+    "@svgr/plugin-prettier": "^8.1.0",
+    "@svgr/plugin-svgo": "^8.1.0"
+  }
+}

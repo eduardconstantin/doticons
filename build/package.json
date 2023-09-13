@@ -1,0 +1,40 @@
+{
+    "name": "doticons",
+    "version": "0.0.1",
+    "description": "Doticons is a comprehensive and carefully curated collection of SVG dot icons.",
+    "author": "Eduard-Constantin Ibinceanu",
+    "license": "MIT",
+    "keywords": [
+      "doticons",
+      "icons",
+      "svg",
+      "dot matrix"
+    ],
+    "homepage": "https://github.com/eduardconstantin/doticons#readme",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/eduardconstantin/doticons.git"
+    },
+    "files": [
+      "16",
+      "32"
+    ],
+    "sideEffects": false,
+    "publishConfig": {
+      "access": "public"
+    },
+    "peerDependencies": {
+      "react": ">= 16"
+    },
+    "exports": {
+      "./package.json": {
+        "default": "./package.json"
+      },
+      "./16/index": {
+        "default": "./16/index.js"
+      },
+      "./32/index": {
+        "default": "./32/index.js"
+      }
+    }
+  }

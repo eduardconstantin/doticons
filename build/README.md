@@ -1,4 +1,4 @@
-<img src=".github/title.png"/>
+<img src="https://res.cloudinary.com/practicaldev/image/fetch/s--qlW9GhCB--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9qrm2oxx2ntsfhdfqkuu.png"/>
 <br />
 
 Doticons is a comprehensive and carefully curated collection of SVG dot icons.
@@ -40,15 +40,31 @@ With a focus on simplicity and versatility, these dot icons can be seamlessly in
     </tr>
 </table>
 
-## 👥 Contributing
+## 🌱 Usage
 
-I welcome feedback and contributions from other developers, designers, and enthusiasts who are passionate about dot icons and want to make a positive impact on this repository.
+Install the Doticons package from npm.
 
-In order to create an issue or a pull request with your changes, please read
-[our contribution guidelines](CONTRIBUTING.md), and thank you for being involved!
+```sh
+npm i doticons
+```
 
-For a full list of all authors and contributors, see
-[the contributors page](https://github.com/eduardconstantin/doticons/contributors).
+Each icon can be imported individually as a React component:
+
+```js
+import { GitDoticon } from 'doticons/16'
+
+function MyComponent() {
+  return (
+    <div>
+      <GitDoticon />
+      <p>...</p>
+    </div>
+  )
+}
+```
+
+The 16x16 icons can be imported from `doticons/16` and the 32x32 icons can be imported from `doticons/32`.
+Icons use an upper camel case naming convention and are always suffixed with the word `Doticon`.
 
 ## 📜 License
 
