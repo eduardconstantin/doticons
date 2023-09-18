@@ -28,13 +28,13 @@ With a focus on simplicity and versatility, these dot icons can be seamlessly in
     </tr>
     <tr>
       <td valign="center" align="center" >
-        <img width="25px" background="red" src="https://github.com/eduardconstantin/doticons/blob/main/icons/32/github.svg"/>
-        <img width="75px" src="https://github.com/eduardconstantin/doticons/blob/icons/src/32/github.svg"/>
-        <img width="150px" src="https://github.com/eduardconstantin/doticons/blob/icons/src/32/github.svg"/>
+        <img width="25px" src="https://github.com/eduardconstantin/doticons/blob/main/icons/32/github.svg"/>
+        <img width="75px" src="https://github.com/eduardconstantin/doticons/blob/main/icons/src/32/github.svg"/>
+        <img width="150px" src="https://github.com/eduardconstantin/doticons/blob/main/icons/src/32/github.svg"/>
       </td>
       <td valign="center" align="center">
-        <img width="25px" src="https://github.com/eduardconstantin/doticons/blob/icons/src/16/github.svg"/>
-        <img width="75px" style="background: #fff" src="https://github.com/eduardconstantin/doticons/blob/main/icons/16/github.svg"/>
+        <img width="25px" src="https://github.com/eduardconstantin/doticons/blob/main/icons/src/16/github.svg"/>
+        <img width="75px" src="https://github.com/eduardconstantin/doticons/blob/main/icons/16/github.svg"/>
         <img width="150px" src="https://github.com/eduardconstantin/doticons/blob/main/icons/16/github.svg"/>
       </td>
     </tr>
