@@ -39,3 +39,6 @@ jobs:
         
       - name: Build package
         run: npm run build
+
+      - name: List build folder
+        run: ls -la ./build
