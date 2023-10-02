@@ -7,6 +7,9 @@
   "scripts": {
     "build": "node ./src/build.js 16 && node ./src/build.js 32"
   },
+  "files": [
+    "build/*"
+  ],
   "type": "module",
   "dependencies": {
     "@babel/core": "^7.22.17",
