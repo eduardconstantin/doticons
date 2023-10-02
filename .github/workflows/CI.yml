@@ -41,4 +41,4 @@ jobs:
         run: npm run build
 
       - name: List build folder
-        run: ls -la ./build/16
+        run: ls -la ./build
