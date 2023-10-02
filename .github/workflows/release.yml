@@ -40,6 +40,6 @@ jobs:
         run: npm install
 
       - name: Publish `doticons`
-        run: npm publish
+        run: npm publish ./build
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
