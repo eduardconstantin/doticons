@@ -24,7 +24,7 @@
       "access": "public"
     },
     "peerDependencies": {
-      "react": ">= 16"
+      "react": ">= 17"
     },
     "exports": {
       "./package.json": {

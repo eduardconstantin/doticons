@@ -39,6 +39,10 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm install
 
+      - name: Build package
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm run build
+
       - name: Publish `doticons`
         run: npm publish ./build
         env:
