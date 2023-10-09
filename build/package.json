@@ -31,16 +31,20 @@
         "default": "./package.json"
       },
       "./16/index": {
-        "default": "./16/index.js"
+        "default": "./16/index.js",
+        "types":"./16/index.d.ts"
       },
       "./16": {
-        "default": "./16/index.js"
+        "default": "./16/index.js",
+        "types":"./16/index.d.ts"
       },
       "./32/index": {
-        "default": "./32/index.js"
+        "default": "./32/index.js",
+        "types":"./32/index.d.ts"
       },
       "./32": {
-        "default": "./32/index.js"
+        "default": "./32/index.js",
+        "types":"./32/index.d.ts"
       }
     }
   }
