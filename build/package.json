@@ -33,7 +33,13 @@
       "./16/index": {
         "default": "./16/index.js"
       },
+      "./16": {
+        "default": "./16/index.js"
+      },
       "./32/index": {
+        "default": "./32/index.js"
+      },
+      "./32": {
         "default": "./32/index.js"
       }
     }
