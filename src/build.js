@@ -35,10 +35,16 @@ const buildIcons = async (size, icons) => {
       let { code } = await transformAsync(content, {
         plugins: [[("@babel/plugin-transform-react-jsx"), { useBuiltIns: true }]],
       })
+
+      let type = `import * as React from 'react';\ndeclare const ${componentName}: React.ForwardRefExoticComponent<React.PropsWithoutRef<React.SVGProps<SVGSVGElement>> & { width?: string, height?: string, fill?: string } & React.RefAttributes<SVGSVGElement>>;\nexport default ${componentName};\n`
+      
       await writeFiles(`build/${size}/${componentName}.js`, code)
+      await writeFiles(`build/${size}/${componentName}.d.ts`, type)
     })
   )
   await writeFiles(`build/${size}/index.js`, exportIcons(icons))
+  await writeFiles(`build/${size}/index.d.ts`, exportIcons(icons, false))
+
 }
 
 async function writeFiles(file, text) {
@@ -46,10 +52,11 @@ async function writeFiles(file, text) {
     await fs.writeFile(file, text, 'utf8')
 }
 
-function exportIcons(icons) {
+function exportIcons(icons, includeExtension = true) {
   return icons
     .map(({ componentName }) => {
-      return `export { default as ${componentName} } from './${componentName}.js'`
+      let extension = includeExtension ? '.js' : ''
+      return `export { default as ${componentName} } from './${componentName}${extension}'`
     })
     .join("\n")
 }
