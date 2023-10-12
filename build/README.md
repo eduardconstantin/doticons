@@ -51,12 +51,12 @@ npm i doticons
 Each icon can be imported individually as a React component:
 
 ```js
-import { GitDoticon } from 'doticons/16'
+import { GithubDoticon } from 'doticons/16'
 
 function MyComponent() {
   return (
     <div>
-      <GitDoticon />
+      <GithubDoticon />
       <p>...</p>
     </div>
   )
