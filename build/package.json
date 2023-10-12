@@ -32,20 +32,20 @@
         "default": "./package.json"
       },
       "./16/index": {
-        "default": "./16/index.js",
-        "types":"./16/index.d.ts"
+        "types":"./16/index.d.ts",
+        "default": "./16/index.js"
       },
       "./16": {
-        "default": "./16/index.js",
-        "types":"./16/index.d.ts"
+        "types":"./16/index.d.ts",
+        "default": "./16/index.js"
       },
       "./32/index": {
-        "default": "./32/index.js",
-        "types":"./32/index.d.ts"
+        "types":"./32/index.d.ts",
+        "default": "./32/index.js"
       },
       "./32": {
-        "default": "./32/index.js",
-        "types":"./32/index.d.ts"
+        "types":"./32/index.d.ts",
+        "default": "./32/index.js"
       }
     }
   }
