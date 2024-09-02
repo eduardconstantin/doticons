@@ -1,51 +1,51 @@
 {
-    "name": "doticons",
-    "version": "0.7.0",
-    "description": "Doticons is a comprehensive and carefully curated collection of SVG dot icons.",
-    "author": "Eduard-Constantin Ibinceanu",
-    "license": "MIT",
-    "keywords": [
-      "doticons",
-      "icons",
-      "svg",
-      "dot matrix",
-      "collection"
-    ],
-    "homepage": "https://github.com/eduardconstantin/doticons#readme",
-    "repository": {
-      "type": "git",
-      "url": "https://github.com/eduardconstantin/doticons"
+  "name": "doticons",
+  "version": "0.7.1",
+  "description": "Doticons is a comprehensive and carefully curated collection of SVG dot icons.",
+  "author": "Eduard-Constantin Ibinceanu",
+  "license": "MIT",
+  "keywords": [
+    "doticons",
+    "icons",
+    "svg",
+    "dot matrix",
+    "collection"
+  ],
+  "homepage": "https://github.com/eduardconstantin/doticons#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eduardconstantin/doticons"
+  },
+  "files": [
+    "16",
+    "32"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": ">= 17"
+  },
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
     },
-    "files": [
-      "16",
-      "32"
-    ],
-    "sideEffects": false,
-    "publishConfig": {
-      "access": "public"
+    "./16/index": {
+      "types": "./16/index.d.ts",
+      "default": "./16/index.js"
     },
-    "peerDependencies": {
-      "react": ">= 17"
+    "./16": {
+      "types": "./16/index.d.ts",
+      "default": "./16/index.js"
     },
-    "exports": {
-      "./package.json": {
-        "default": "./package.json"
-      },
-      "./16/index": {
-        "types":"./16/index.d.ts",
-        "default": "./16/index.js"
-      },
-      "./16": {
-        "types":"./16/index.d.ts",
-        "default": "./16/index.js"
-      },
-      "./32/index": {
-        "types":"./32/index.d.ts",
-        "default": "./32/index.js"
-      },
-      "./32": {
-        "types":"./32/index.d.ts",
-        "default": "./32/index.js"
-      }
+    "./32/index": {
+      "types": "./32/index.d.ts",
+      "default": "./32/index.js"
+    },
+    "./32": {
+      "types": "./32/index.d.ts",
+      "default": "./32/index.js"
     }
   }
+}
