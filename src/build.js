@@ -21,6 +21,32 @@ const buildIcons = async (size, icons) => {
     32: { width: "16", height: "16", cx: "8", cy: "8", r: "6" },
   }[size];
 
+  const filterOne = `<filter id="shimmer">
+      <feTurbulence baseFrequency="0.15" numOctaves="2" result="noise"/>
+      <feColorMatrix in="noise" type="hueRotate" values="0" result="animatedNoise">
+        <animate attributeName="values" from="0" to="360" dur="5s" repeatCount="indefinite" />
+      </feColorMatrix>
+      <feColorMatrix in="animatedNoise" type="matrix" values="
+                0 0 0 0 0
+                0 0 0 0 0
+                0 0 0 0 0
+                30 2 2 -5 -20" result="maskAlpha" />
+      <feMorphology operator="dilate" radius="8" in="maskAlpha" result="blockyMask" />
+      <feGaussianBlur in="blockyMask" stdDeviation="2" out="blur" />
+      <feComposite operator="in" in="SourceGraphic" in2="blur" />
+    </filter>`;
+
+    const filterTwo = `<filter id="shimmer" width="2">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="10" stitchTiles="stitch" result="turb" width="600"/>
+      <feComponentTransfer in="grayNoise" result="alphaMask">  
+        <feFuncA type="table" tableValues="1 1 0.05 0 1" /> 
+      </feComponentTransfer> 
+      <feTile width="1200"/>
+      <feOffset result="TURBULENCE" dx="0">
+        <animate attributeName="dx" from="-600" to="0" begin="0s" dur="7s" repeatCount="indefinite" />
+      </feOffset>
+      <feComposite operator="in" in="SourceGraphic" in2="TURBULENCE" />
+    </filter>`;
   const dotsPattern = `<defs>
     <pattern id="dots" x="0" y="0" width="${patternConfig.width}" height="${patternConfig.height}" patternUnits="userSpaceOnUse">
       <circle cx="${patternConfig.cx}" cy="${patternConfig.cy}" r="${patternConfig.r}" fill="black" />
