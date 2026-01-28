@@ -21,7 +21,7 @@ const buildIcons = async (size, icons) => {
     32: { width: "16", height: "16", cx: "8", cy: "8", r: "6" },
   }[size];
 
-  const filterOne = `<filter id="shimmer">
+  const filterOne = `<filter id="pulse">
       <feTurbulence baseFrequency="0.15" numOctaves="2" result="noise"/>
       <feColorMatrix in="noise" type="hueRotate" values="0" result="animatedNoise">
         <animate attributeName="values" from="0" to="360" dur="5s" repeatCount="indefinite" />
@@ -32,34 +32,41 @@ const buildIcons = async (size, icons) => {
                 0 0 0 0 0
                 30 2 2 -5 -20" result="maskAlpha" />
       <feMorphology operator="dilate" radius="8" in="maskAlpha" result="blockyMask" />
-      <feGaussianBlur in="blockyMask" stdDeviation="2" out="blur" />
+      <feGaussianBlur in="blockyMask" stdDeviation="2" result="blur" />
       <feComposite operator="in" in="SourceGraphic" in2="blur" />
     </filter>`;
 
-    const filterTwo = `<filter id="shimmer" width="2">
-      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="10" stitchTiles="stitch" result="turb" width="600"/>
-      <feComponentTransfer in="grayNoise" result="alphaMask">  
-        <feFuncA type="table" tableValues="1 1 0.05 0 1" /> 
+  const filterTwo = `<filter id="shimmer" width="2">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" stitchTiles="stitch" result="turb" width="600"/>
+      <feComponentTransfer in="turb" result="alphaMask">  
+        <feFuncA type="table" tableValues="0 0 0.05 1 1" /> 
       </feComponentTransfer> 
-      <feTile width="1200"/>
-      <feOffset result="TURBULENCE" dx="0">
+      <feTile width="1200"/> 
+      <feOffset result="offset" dx="0">
         <animate attributeName="dx" from="-600" to="0" begin="0s" dur="7s" repeatCount="indefinite" />
       </feOffset>
-      <feComposite operator="in" in="SourceGraphic" in2="TURBULENCE" />
+      <feComposite operator="in" in="SourceGraphic" in2="offset" />
     </filter>`;
-  const dotsPattern = `<defs>
+
+  const defs = `<defs>
     <pattern id="dots" x="0" y="0" width="${patternConfig.width}" height="${patternConfig.height}" patternUnits="userSpaceOnUse">
       <circle cx="${patternConfig.cx}" cy="${patternConfig.cy}" r="${patternConfig.r}" fill="black" />
     </pattern>
-  </defs>
-  <rect width="100%" height="100%" style="fill: url(#dots);" opacity="DOTS_OPACITY" />`;
+    ${filterOne}
+    ${filterTwo}
+  </defs>`;
 
   await Promise.all(
     icons.flatMap(async ({ componentName, svg }) => {
-      const svgWithPattern = svg.replace(/<svg[^>]*>/, `$&\n${dotsPattern}\n`);
+      const svgWithInjected = svg.replace(
+        /<svg[^>]*>/,
+        (match) =>
+          `${match} ${defs} <g filter="ANIM"> <rect width="100%" height="100%" fill="url(#dots)" opacity="DOTS_OPACITY" />`,
+      );
+      const finalSvg = svgWithInjected.replace(/<\/svg>/, "</g></svg>");
 
       let content = await transform(
-        svgWithPattern,
+        finalSvg,
         {
           ref: true,
           prettier: true,
@@ -67,8 +74,22 @@ const buildIcons = async (size, icons) => {
             width: "inherit",
             height: "inherit",
           },
+          svgoConfig: {
+            plugins: [
+              {
+                name: "preset-default",
+                params: {
+                  overrides: {
+                    removeUselessDefs: false,
+                    cleanupIds: false,
+                  },
+                },
+              },
+            ],
+          },
           replaceAttrValues: {
             DOTS_OPACITY: "{props.dotsOpacity??0}",
+            ANIM: "{props.anim ? `url(#${props.anim})` : undefined}",
           },
           jsxRuntimeImport: { source: "react", specifiers: ["createElement"] },
           plugins: ["@svgr/plugin-svgo", "@svgr/plugin-jsx", "@svgr/plugin-prettier"],
@@ -77,11 +98,11 @@ const buildIcons = async (size, icons) => {
       );
       let { code } = await transformAsync(content, {
         comments: false,
-        minified: true,
+        minified: false,
         plugins: [["@babel/plugin-transform-react-jsx", { useBuiltIns: true, pragma: "createElement" }]],
       });
 
-      let type = `import type { SVGProps, ForwardRefExoticComponent, RefAttributes } from 'react';\ndeclare const ${componentName}: ForwardRefExoticComponent<SVGProps<SVGSVGElement> & { width?: string, height?: string, fill?: string, dotsOpacity?: number } & RefAttributes<SVGSVGElement>>;\nexport default ${componentName};\n`;
+      let type = `import type { SVGProps, ForwardRefExoticComponent, RefAttributes } from 'react';\ndeclare const ${componentName}: ForwardRefExoticComponent<SVGProps<SVGSVGElement> & { width?: string, height?: string, fill?: string, dotsOpacity?: number, anim?: shimmer | pulse } & RefAttributes<SVGSVGElement>>;\nexport default ${componentName};\n`;
 
       await writeFiles(`build/${size}/${componentName}.js`, code);
       await writeFiles(`build/${size}/${componentName}.d.ts`, type);
