@@ -48,20 +48,16 @@ const buildIcons = async (size, icons) => {
       <feComposite operator="in" in="SourceGraphic" in2="offset" />
     </filter>`;
 
-  const defs = `<defs>
-    <pattern id="dots" x="0" y="0" width="${patternConfig.width}" height="${patternConfig.height}" patternUnits="userSpaceOnUse">
+  const pattern = `<pattern id="dots" x="0" y="0" width="${patternConfig.width}" height="${patternConfig.height}" patternUnits="userSpaceOnUse">
       <circle cx="${patternConfig.cx}" cy="${patternConfig.cy}" r="${patternConfig.r}" fill="black" />
-    </pattern>
-    ${filterOne}
-    ${filterTwo}
-  </defs>`;
+    </pattern>`;
 
   await Promise.all(
     icons.flatMap(async ({ componentName, svg }) => {
       const svgWithInjected = svg.replace(
         /<svg[^>]*>/,
         (match) =>
-          `${match} ${defs} <g filter="ANIM"> <rect width="100%" height="100%" fill="url(#dots)" opacity="DOTS_OPACITY" />`,
+          `${match} <defs>${filterOne}${filterTwo}${pattern}</defs><g filter="ANIM"><rect width="100%" height="100%" fill="url(#dots)" opacity="DOTS_OPACITY" />`,
       );
       const finalSvg = svgWithInjected.replace(/<\/svg>/, "</g></svg>");
 
@@ -81,7 +77,6 @@ const buildIcons = async (size, icons) => {
                 params: {
                   overrides: {
                     removeUselessDefs: false,
-                    cleanupIds: false,
                   },
                 },
               },
