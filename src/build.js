@@ -37,9 +37,9 @@ const buildIcons = async (size, icons) => {
     </filter>`;
 
   const filterTwo = `<filter id="shimmer" width="2">
-      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" stitchTiles="stitch" result="turb" width="600"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.005" numOctaves="2" stitchTiles="stitch" result="turb" width="600"/>
       <feComponentTransfer in="turb" result="alphaMask">  
-        <feFuncA type="table" tableValues="0 0 0.05 1 1" /> 
+        <feFuncA type="table" tableValues="1 1 0.1 0 1" /> 
       </feComponentTransfer> 
       <feTile width="1200"/> 
       <feOffset result="offset" dx="0">
