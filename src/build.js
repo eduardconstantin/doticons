@@ -37,9 +37,9 @@ const buildIcons = async (size, icons) => {
     </filter>`;
 
   const filterTwo = `<filter id="shimmer" width="2">
-      <feTurbulence type="fractalNoise" baseFrequency="0.005" numOctaves="2" stitchTiles="stitch" result="turb" width="600"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.003" numOctaves="3" stitchTiles="stitch" result="turb" width="600"/>
       <feComponentTransfer in="turb" result="alphaMask">  
-        <feFuncA type="table" tableValues="1 1 0.1 0 1" /> 
+        <feFuncA type="table" tableValues="0.5 1 0.05 0 1" /> 
       </feComponentTransfer> 
       <feTile width="1200"/> 
       <feOffset result="offset" dx="0">
@@ -70,6 +70,14 @@ const buildIcons = async (size, icons) => {
             width: "inherit",
             height: "inherit",
           },
+          template: (variables, { tpl }) => {
+            return tpl`
+              ${variables.imports};
+              const ${variables.componentName} = ({ dotsOpacity, anim, animSpeed, ...props }, ref) => (
+                  ${variables.jsx})
+              ${variables.exports};
+            `;
+          },
           svgoConfig: {
             plugins: [
               {
@@ -77,14 +85,15 @@ const buildIcons = async (size, icons) => {
                 params: {
                   overrides: {
                     removeUselessDefs: false,
+                    cleanupIds: false,
                   },
                 },
               },
             ],
           },
           replaceAttrValues: {
-            DOTS_OPACITY: "{props.dotsOpacity??0}",
-            ANIM: "{props.anim ? `url(#${props.anim})` : undefined}",
+            DOTS_OPACITY: "{dotsOpacity??0}",
+            ANIM: "{anim ? `url(#${anim})` : undefined}",
           },
           jsxRuntimeImport: { source: "react", specifiers: ["createElement"] },
           plugins: ["@svgr/plugin-svgo", "@svgr/plugin-jsx", "@svgr/plugin-prettier"],
