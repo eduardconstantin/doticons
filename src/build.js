@@ -24,7 +24,7 @@ const buildIcons = async (size, icons) => {
   const filterOne = `<filter id="pulse">
       <feTurbulence baseFrequency="0.15" numOctaves="2" result="noise"/>
       <feColorMatrix in="noise" type="hueRotate" values="0" result="animatedNoise">
-        <animate attributeName="values" from="0" to="360" dur="5s" repeatCount="indefinite" />
+        <animate attributeName="values" from="0" to="360" dur="SPEED" repeatCount="indefinite" />
       </feColorMatrix>
       <feColorMatrix in="animatedNoise" type="matrix" values="
                 0 0 0 0 0
@@ -43,7 +43,7 @@ const buildIcons = async (size, icons) => {
       </feComponentTransfer> 
       <feTile width="1200"/> 
       <feOffset result="offset" dx="0">
-        <animate attributeName="dx" from="-600" to="0" begin="0s" dur="7s" repeatCount="indefinite" />
+        <animate attributeName="dx" from="-600" to="0" begin="0s" dur="SPEED" repeatCount="indefinite" />
       </feOffset>
       <feComposite operator="in" in="SourceGraphic" in2="offset" />
     </filter>`;
@@ -94,6 +94,7 @@ const buildIcons = async (size, icons) => {
           replaceAttrValues: {
             DOTS_OPACITY: "{dotsOpacity??0}",
             ANIM: "{anim ? `url(#${anim})` : undefined}",
+            SPEED: "{(animSpeed ?? 5) + 's'}",
           },
           jsxRuntimeImport: { source: "react", specifiers: ["createElement"] },
           plugins: ["@svgr/plugin-svgo", "@svgr/plugin-jsx", "@svgr/plugin-prettier"],
@@ -106,7 +107,7 @@ const buildIcons = async (size, icons) => {
         plugins: [["@babel/plugin-transform-react-jsx", { useBuiltIns: true, pragma: "createElement" }]],
       });
 
-      let type = `import type { SVGProps, ForwardRefExoticComponent, RefAttributes } from 'react';\ndeclare const ${componentName}: ForwardRefExoticComponent<SVGProps<SVGSVGElement> & { width?: string, height?: string, fill?: string, dotsOpacity?: number, anim?: shimmer | pulse } & RefAttributes<SVGSVGElement>>;\nexport default ${componentName};\n`;
+      let type = `import type { SVGProps, ForwardRefExoticComponent, RefAttributes } from 'react';\ndeclare const ${componentName}: ForwardRefExoticComponent<SVGProps<SVGSVGElement> & { width?: string, height?: string, fill?: string, dotsOpacity?: number, anim?: shimmer | pulse, animSpeed?: number } & RefAttributes<SVGSVGElement>>;\nexport default ${componentName};\n`;
 
       await writeFiles(`build/${size}/${componentName}.js`, code);
       await writeFiles(`build/${size}/${componentName}.d.ts`, type);
