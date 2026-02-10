@@ -37,7 +37,7 @@ const buildIcons = async (size, icons) => {
     </filter>`;
 
   const filterTwo = `<filter id="shimmer" width="2">
-      <feTurbulence width="600" baseFrequency="0.006" numOctaves="0.5" result="noise" stitchTiles="stitch" type="fractalNoise"/>
+      <feTurbulence width="600" baseFrequency="0.006" numOctaves="1" result="noise" stitchTiles="stitch" type="fractalNoise"/>
       <feColorMatrix in="noise" result="animatedNoise" type="hueRotate" values="0">
         <animate attributeName="values" dur="5s" repeatCount="indefinite" values="0;360"/>
       </feColorMatrix>
@@ -85,16 +85,17 @@ const buildIcons = async (size, icons) => {
       let content = await transform(
         finalSvg,
         {
-          ref: true,
+          ref: false,
           prettier: true,
           svgProps: {
             width: "inherit",
             height: "inherit",
+            ref: "{ref}",
           },
           template: (variables, { tpl }) => {
             return tpl`
               ${variables.imports};
-              const ${variables.componentName} = ({ dotsOpacity, anim, animSpeed, animDir, ...props }, ref) => (
+              const ${variables.componentName} = ({ dotsOpacity, anim, animSpeed, animDir, ref, ...props }) => (
                   ${variables.jsx})
               ${variables.exports};
             `;
@@ -129,7 +130,7 @@ const buildIcons = async (size, icons) => {
         plugins: [["@babel/plugin-transform-react-jsx", { useBuiltIns: true, pragma: "createElement" }]],
       });
 
-      let type = `import type { SVGProps, ForwardRefExoticComponent, RefAttributes } from 'react';\ndeclare const ${componentName}: ForwardRefExoticComponent<SVGProps<SVGSVGElement> & { width?: string, height?: string, fill?: string, dotsOpacity?: number, anim?: shimmer | pulse | sparkling, animSpeed?: number, animDir?: x | y } & RefAttributes<SVGSVGElement>>;\nexport default ${componentName};\n`;
+      let type = `import type { SVGProps, RefAttributes } from 'react';\ndeclare const ${componentName}: { width?: string, height?: string, fill?: string, dotsOpacity?: number, anim?: shimmer | pulse | sparkling, animSpeed?: number, animDir?: x | y } & RefAttributes<SVGSVGElement>>;\nexport default ${componentName};\n`;
 
       await writeFiles(`build/${size}/${componentName}.js`, code);
       await writeFiles(`build/${size}/${componentName}.d.ts`, type);
