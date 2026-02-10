@@ -43,7 +43,6 @@ const buildIcons = async (size, icons) => {
       </feColorMatrix>
       <feColorMatrix
         type="matrix"
-        result="mat"
         values="0 0 0 0 0
                 0 0 0 0 0
                 0 0 0 0 0
@@ -57,11 +56,11 @@ const buildIcons = async (size, icons) => {
     </filter>`;
 
   const filterThree = `<filter id="sparkling">
-    <feTurbulence width="600" baseFrequency="0.02" numOctaves="10" result="noise" stitchTiles="stitch" type="turbulence">
+    <feTurbulence width="600" baseFrequency="0.015" numOctaves="2" result="noise" stitchTiles="stitch" type="turbulence">
       <animate attributeName="seed" dur="5s" repeatCount="indefinite" values="0;30"/>
     </feTurbulence>
     <feComponentTransfer in="mat" result="alphaMask">
-      <feFuncA type="table" tableValues="0.5 0.5 1 2 1" />
+      <feFuncA type="table" tableValues="0.4 0.4 2 2 1" />
     </feComponentTransfer>
     <feTile width="1200" height="1200"/>
     <feOffset result="offset">
