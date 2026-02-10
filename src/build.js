@@ -88,8 +88,8 @@ const buildIcons = async (size, icons) => {
           ref: false,
           prettier: true,
           svgProps: {
-            width: "inherit",
-            height: "inherit",
+            width: "100%",
+            height: "100%",
             ref: "{ref}",
           },
           template: (variables, { tpl }) => {
