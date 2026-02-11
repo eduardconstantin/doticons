@@ -130,7 +130,7 @@ const buildIcons = async (size, icons) => {
         plugins: [["@babel/plugin-transform-react-jsx", { useBuiltIns: true, pragma: "createElement" }]],
       });
 
-      let type = `import type { SVGProps, RefAttributes } from 'react';\ndeclare const ${componentName}: { width?: string, height?: string, fill?: string, dotsOpacity?: number, anim?: shimmer | pulse | sparkling, animSpeed?: number, animDir?: x | y } & RefAttributes<SVGSVGElement>>;\nexport default ${componentName};\n`;
+      let type = `import type { SVGProps, RefAttributes } from 'react';\ndeclare const ${componentName}: { width?: string, height?: string, fill?: string, dotsOpacity?: number, anim?: "shimmer" | "pulse" | "sparkling", animSpeed?: number, animDir?: "x" | "y" } & RefAttributes<SVGSVGElement>>;\nexport default ${componentName};\n`;
 
       await writeFiles(`build/${size}/${componentName}.js`, code);
       await writeFiles(`build/${size}/${componentName}.d.ts`, type);
