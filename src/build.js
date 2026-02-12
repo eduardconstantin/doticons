@@ -56,7 +56,7 @@ const buildIcons = async (size, icons) => {
     </filter>`;
 
   const filterThree = `<filter id="sparkling">
-    <feTurbulence width="600" baseFrequency="0.015" numOctaves="2" result="noise" stitchTiles="stitch" type="turbulence">
+    <feTurbulence width="600" baseFrequency="0.02" numOctaves="1" result="noise" stitchTiles="stitch" type="turbulence">
       <animate attributeName="seed" dur="5s" repeatCount="indefinite" values="0;30"/>
     </feTurbulence>
     <feComponentTransfer in="mat" result="alphaMask">
