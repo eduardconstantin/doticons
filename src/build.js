@@ -21,10 +21,12 @@ const buildIcons = async (size, icons) => {
     32: { width: "16", height: "16", cx: "8", cy: "8", r: "6" },
   }[size];
 
-  const filterOne = `<filter id="pulse">
+  await Promise.all(
+    icons.flatMap(async ({ componentName, svg }) => {
+      const filterOne = `<filter id="${componentName}pulse">
       <feTurbulence baseFrequency="0.15" numOctaves="2" result="noise"/>
       <feColorMatrix in="noise" type="hueRotate" values="0" result="animatedNoise">
-        <animate attributeName="values" values="0;360" dur="SPEED" repeatCount="indefinite" />
+        <animate attributeName="values" values="0;360" dur="SPEED" repeatCount="indefinite" begin="HOVER_BEGIN" end="HOVER_END"/>
       </feColorMatrix>
       <feColorMatrix in="animatedNoise" type="matrix" values="
                 0 0 0 0 0
@@ -36,10 +38,10 @@ const buildIcons = async (size, icons) => {
       <feComposite operator="in" in="SourceGraphic" in2="blur" />
     </filter>`;
 
-  const filterTwo = `<filter id="shimmer" width="2">
+      const filterTwo = `<filter id="${componentName}shimmer" width="2">
       <feTurbulence width="600" baseFrequency="0.006" numOctaves="1" result="noise" stitchTiles="stitch" type="fractalNoise"/>
       <feColorMatrix in="noise" result="animatedNoise" type="hueRotate" values="0">
-        <animate attributeName="values" dur="5s" repeatCount="indefinite" values="0;360"/>
+        <animate attributeName="values" dur="5s" repeatCount="indefinite" values="0;360" begin="HOVER_BEGIN" end="HOVER_END"/>
       </feColorMatrix>
       <feColorMatrix
         type="matrix"
@@ -50,37 +52,37 @@ const buildIcons = async (size, icons) => {
       />
       <feTile width="1200" height="1200"/> 
       <feOffset result="offset" dx="0" dy="0">
-        <animate attributeName="DIR" from="-600" to="0" begin="0s" dur="SPEED" repeatCount="indefinite" />
+        <animate attributeName="DIR" from="-600" to="0" dur="SPEED" repeatCount="indefinite" begin="HOVER_BEGIN" end="HOVER_END"/>
       </feOffset>
       <feComposite operator="in" in="SourceGraphic" in2="offset" />
     </filter>`;
 
-  const filterThree = `<filter id="sparkling">
+      const filterThree = `<filter id="${componentName}sparkling">
     <feTurbulence width="600" baseFrequency="0.02" numOctaves="1" result="noise" stitchTiles="stitch" type="turbulence">
-      <animate attributeName="seed" dur="5s" repeatCount="indefinite" values="0;30"/>
+      <animate attributeName="seed" dur="5s" repeatCount="indefinite" values="0;30" begin="HOVER_BEGIN" end="HOVER_END"/>
     </feTurbulence>
     <feComponentTransfer in="mat" result="alphaMask">
       <feFuncA type="table" tableValues="0.4 0.4 2 2 1" />
     </feComponentTransfer>
     <feTile width="1200" height="1200"/>
     <feOffset result="offset">
-      <animate attributeName="DIR" begin="0s" dur="SPEED" from="-600" repeatCount="indefinite" to="0"/>
+      <animate attributeName="DIR" begin="HOVER_BEGIN" end="HOVER_END" dur="SPEED" from="-600" repeatCount="indefinite" to="0"/>
     </feOffset>
     <feComposite in="SourceGraphic" in2="offset" operator="in"/>
   </filter>`;
 
-  const pattern = `<pattern id="dots" x="0" y="0" width="${patternConfig.width}" height="${patternConfig.height}" patternUnits="userSpaceOnUse">
+      const pattern = `<pattern id="${componentName}dots" x="0" y="0" width="${patternConfig.width}" height="${patternConfig.height}" patternUnits="userSpaceOnUse">
       <circle cx="${patternConfig.cx}" cy="${patternConfig.cy}" r="${patternConfig.r}" fill="black" />
     </pattern>`;
 
-  await Promise.all(
-    icons.flatMap(async ({ componentName, svg }) => {
       const svgWithInjected = svg.replace(
         /<svg[^>]*>/,
         (match) =>
-          `${match} <defs>${filterOne}${filterTwo}${filterThree}${pattern}</defs><g filter="ANIM"><rect width="100%" height="100%" fill="url(#dots)" opacity="DOTS_OPACITY" />`,
+          `${match} <defs>${filterOne}${filterTwo}${filterThree}${pattern}</defs><g filter="ANIM"><rect width="100%" height="100%" fill="url(#${componentName}dots)" opacity="DOTS_OPACITY" />`,
       );
       const finalSvg = svgWithInjected.replace(/<\/svg>/, "</g></svg>");
+
+      const id = componentName.toLowerCase() + size;
 
       let content = await transform(
         finalSvg,
@@ -88,6 +90,7 @@ const buildIcons = async (size, icons) => {
           ref: false,
           prettier: true,
           svgProps: {
+            id: `${id}`,
             width: "100%",
             height: "100%",
             ref: "{ref}",
@@ -95,7 +98,7 @@ const buildIcons = async (size, icons) => {
           template: (variables, { tpl }) => {
             return tpl`
               ${variables.imports};
-              const ${variables.componentName} = ({ dotsOpacity, anim, animSpeed, animDir, ref, ...props }) => (
+              const ${variables.componentName} = ({ dotsOpacity, anim, animSpeed, animDir, hoverAnim, ref, ...props }) => (
                   ${variables.jsx})
               ${variables.exports};
             `;
@@ -115,9 +118,11 @@ const buildIcons = async (size, icons) => {
           },
           replaceAttrValues: {
             DOTS_OPACITY: "{dotsOpacity??0}",
-            ANIM: "{anim ? `url(#${anim})` : undefined}",
+            ANIM: `{anim ? "url(#${componentName}"+anim+")" : undefined}`,
             SPEED: "{(animSpeed ?? 5) + 's'}",
             DIR: "{'d'+(animDir ?? 'x')}",
+            HOVER_BEGIN: `{hoverAnim?"${id}.mouseenter":"0s"}`,
+            HOVER_END: `{hoverAnim?"${id}.mouseleave":undefined}`,
           },
           jsxRuntimeImport: { source: "react", specifiers: ["createElement"] },
           plugins: ["@svgr/plugin-svgo", "@svgr/plugin-jsx", "@svgr/plugin-prettier"],
@@ -130,7 +135,7 @@ const buildIcons = async (size, icons) => {
         plugins: [["@babel/plugin-transform-react-jsx", { useBuiltIns: true, pragma: "createElement" }]],
       });
 
-      let type = `import type { SVGProps, RefAttributes } from 'react';\ndeclare const ${componentName}: { width?: string, height?: string, fill?: string, dotsOpacity?: number, anim?: "shimmer" | "pulse" | "sparkling", animSpeed?: number, animDir?: "x" | "y" } & RefAttributes<SVGSVGElement>>;\nexport default ${componentName};\n`;
+      let type = `import type { SVGProps, RefAttributes } from 'react';\ndeclare const ${componentName}: { width?: string, height?: string, fill?: string, dotsOpacity?: number, anim?: "shimmer" | "pulse" | "sparkling", animSpeed?: number, animDir?: "x" | "y", hoverAnim?: boolean } & RefAttributes<SVGSVGElement>>;\nexport default ${componentName};\n`;
 
       await writeFiles(`build/${size}/${componentName}.js`, code);
       await writeFiles(`build/${size}/${componentName}.d.ts`, type);
